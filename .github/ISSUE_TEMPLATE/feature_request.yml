@@ -1,0 +1,80 @@
+name: Feature request
+description: Suggest a new capability or improvement
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature. Please fill out the fields below so the maintainers can evaluate the request.
+
+        **Before filing**: please search [existing issues](https://github.com/Tej-Katika/amr-sentinel/issues) and [discussions](https://github.com/Tej-Katika/amr-sentinel/discussions) to avoid duplicates. For large or open-ended ideas, please start a Discussion first.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve? Describe the situation, the workflow, and what's currently inadequate.
+      placeholder: "I'm trying to do X, but the platform currently makes me do Y, which is slow / unsafe / impossible because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe what you'd like to happen. Include API surface, UX behavior, or architectural change if you have a specific design in mind.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you considered and why they fall short.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      description: Which part of AMR Sentinel is affected?
+      multiple: true
+      options:
+        - services/ingestion
+        - services/intelligence
+        - services/agentic
+        - services/gateway
+        - frontend
+        - scripts
+        - docker-compose / infrastructure
+        - documentation
+        - new component (describe in proposal)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Estimated scope
+      options:
+        - Small (one file, hours)
+        - Medium (one service / module, days)
+        - Large (cross-service, weeks)
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Use cases, links to related work, references to standards (EUCAST, CLSI, WHO GLASS), citations.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow the project [Code of Conduct](https://github.com/Tej-Katika/amr-sentinel/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct.
+          required: true

@@ -1,0 +1,211 @@
+# =====================================================================
+# AMR Sentinel — .gitignore
+# Bulletproof exclusion of submission materials, internal docs, secrets,
+# generated data, and standard build/IDE artifacts.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# Vivli submission materials and internal process notes — NEVER commit
+# ---------------------------------------------------------------------
+vivli_submission/
+tasks/
+CLAUDE.md
+CLAUDE-*.md
+claude.md
+*draft*
+*Draft*
+*DRAFT*
+reply_drafts.md
+outreach_*.md
+outreach_*.csv
+Replies.txt
+preregistration*.md
+EOI*.md
+framework_brief*.md
+render_pdfs.ps1
+*.pdf
+osf_deposit_checklist.md
+execution_priorities.md
+
+# ---------------------------------------------------------------------
+# Secrets and local configuration
+# ---------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+.secrets/
+**/credentials.json
+**/service-account*.json
+
+# ---------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.egg-info/
+.eggs/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.manifest
+*.spec
+
+# Virtualenv / package managers
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+.uv/
+
+# Testing / coverage
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+.pyre/
+.ruff_cache/
+.pytype/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------
+# Node / Frontend
+# ---------------------------------------------------------------------
+node_modules/
+.npm/
+.yarn/
+.pnp.*
+dist/
+build/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# ---------------------------------------------------------------------
+# Java / Spring Boot / Gradle / Maven
+# ---------------------------------------------------------------------
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+.gradle/
+build/
+!gradle-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
+
+# ---------------------------------------------------------------------
+# IDE / Editor
+# ---------------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+.metadata/
+*.sublime-project
+*.sublime-workspace
+
+# ---------------------------------------------------------------------
+# OS
+# ---------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---------------------------------------------------------------------
+# Logs
+# ---------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------------------------------------------------------------------
+# Generated / runtime data — NEVER commit Vivli-derived data
+# ---------------------------------------------------------------------
+data/models/*.joblib
+data/models/*.pkl
+data/atlas/
+data/spidaar/
+data/smart/
+data/vivli/
+data/sample_data/synthetic_*.csv
+data/raw/
+data/processed/
+data/interim/
+data/external/
+
+# ML experiment tracking
+mlruns/
+.mlflow/
+wandb/
+
+# DVC
+.dvc/
+.dvcignore
+
+# ---------------------------------------------------------------------
+# Docker
+# ---------------------------------------------------------------------
+docker-compose.override.yml
+.docker/
+
+# ---------------------------------------------------------------------
+# Misc
+# ---------------------------------------------------------------------
+*.bak
+*.tmp
+*.temp
+.~lock.*

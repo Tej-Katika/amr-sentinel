@@ -1,0 +1,187 @@
+version: "3.8"
+
+# Full local development stack for AMR Sentinel.
+# Use docker-compose.dev.yml for a lightweight subset (no Neo4j, no agentic).
+
+services:
+  # ------------------------------------------------------------------
+  # Infrastructure
+  # ------------------------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: amr_zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: amr_kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.6.0
+    container_name: amr_schema_registry
+    depends_on:
+      - kafka
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+
+  timescaledb:
+    image: timescale/timescaledb-ha:pg16
+    container_name: amr_timescaledb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: amrsentinel
+      POSTGRES_PASSWORD: amrsentinel_dev
+      POSTGRES_DB: amrsentinel
+    volumes:
+      - timescaledb_data:/home/postgres/pgdata
+      - ./scripts/ddl:/docker-entrypoint-initdb.d:ro
+
+  neo4j:
+    image: neo4j:5.18-community
+    container_name: amr_neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/amrsentinel_dev
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_data:/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: amr_redis
+    ports:
+      - "6379:6379"
+
+  # ------------------------------------------------------------------
+  # Application services
+  # ------------------------------------------------------------------
+  ingestion:
+    build: ./services/ingestion
+    container_name: amr_ingestion
+    ports:
+      - "8001:8000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      DATABASE_URL: postgresql://amrsentinel:amrsentinel_dev@timescaledb:5432/amrsentinel
+    depends_on:
+      - kafka
+      - schema-registry
+      - timescaledb
+
+  intelligence:
+    build: ./services/intelligence
+    container_name: amr_intelligence
+    ports:
+      - "8002:8000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      DATABASE_URL: postgresql://amrsentinel:amrsentinel_dev@timescaledb:5432/amrsentinel
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: amrsentinel_dev
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+    depends_on:
+      - kafka
+      - timescaledb
+      - neo4j
+      - redis
+
+  intelligence-classifier:
+    build: ./services/intelligence
+    container_name: amr_intelligence_classifier
+    command: python -m intelligence.consumers.classification_consumer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      DATABASE_URL: postgresql://amrsentinel:amrsentinel_dev@timescaledb:5432/amrsentinel
+    depends_on:
+      - kafka
+      - timescaledb
+
+  intelligence-surveillance:
+    build: ./services/intelligence
+    container_name: amr_intelligence_surveillance
+    command: python -m intelligence.consumers.surveillance_consumer
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      DATABASE_URL: postgresql://amrsentinel:amrsentinel_dev@timescaledb:5432/amrsentinel
+    depends_on:
+      - kafka
+      - timescaledb
+
+  agentic:
+    build: ./services/agentic
+    container_name: amr_agentic
+    ports:
+      - "8003:8000"
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      INTELLIGENCE_SERVICE_URL: http://intelligence:8000
+      DATABASE_URL: postgresql://amrsentinel:amrsentinel_dev@timescaledb:5432/amrsentinel
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: amrsentinel_dev
+    depends_on:
+      - intelligence
+
+  gateway:
+    build: ./services/gateway
+    container_name: amr_gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://timescaledb:5432/amrsentinel
+      SPRING_DATASOURCE_USERNAME: amrsentinel
+      SPRING_DATASOURCE_PASSWORD: amrsentinel_dev
+      INGESTION_SERVICE_URL: http://ingestion:8000
+      INTELLIGENCE_SERVICE_URL: http://intelligence:8000
+      AGENTIC_SERVICE_URL: http://agentic:8000
+      JWT_SECRET: dev-secret-key-change-in-production
+    depends_on:
+      - timescaledb
+      - ingestion
+      - intelligence
+      - agentic
+
+  dashboard:
+    build: ./frontend
+    container_name: amr_dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:8080/api
+    depends_on:
+      - gateway
+
+volumes:
+  timescaledb_data:
+  neo4j_data:

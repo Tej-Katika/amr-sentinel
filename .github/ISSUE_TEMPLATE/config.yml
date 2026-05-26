@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/Tej-Katika/amr-sentinel/discussions
+    about: For questions about how to use AMR Sentinel, please open a GitHub Discussion rather than an issue.
+  - name: Security vulnerability
+    url: https://github.com/Tej-Katika/amr-sentinel/security/advisories/new
+    about: Please do NOT file public issues for security vulnerabilities. Use a private security advisory instead. See SECURITY.md.

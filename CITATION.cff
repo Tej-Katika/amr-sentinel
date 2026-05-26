@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+title: "AMR Sentinel: an open-source antimicrobial resistance surveillance and clinical stewardship platform"
+message: "If you use AMR Sentinel in academic work, please cite it using the metadata in this file."
+type: software
+authors:
+  - given-names: Tejashwar Reddy
+    family-names: Katika
+    email: TejashwarReddyKatika@my.unt.edu
+    affiliation: "Independent Researcher (affiliated with the University of North Texas)"
+    orcid: "https://orcid.org/0009-0006-3015-5697"
+  - given-names: Akhilesh Reddy
+    family-names: Katika
+    affiliation: "MS Data Science candidate, Flinders University"
+repository-code: "https://github.com/Tej-Katika/amr-sentinel"
+url: "https://github.com/Tej-Katika/amr-sentinel"
+abstract: >-
+  AMR Sentinel is an open-source, event-driven antimicrobial resistance (AMR)
+  surveillance and clinical stewardship platform. It ingests antimicrobial
+  susceptibility test data from hospital microbiology labs in real time,
+  classifies isolates against EUCAST and CLSI breakpoints, runs streaming
+  outbreak detection (CUSUM and BOCPD), and exposes an LLM-assisted clinical
+  stewardship interface for empiric therapy recommendations grounded in local
+  resistance patterns. The platform is designed as parameterized infrastructure
+  for catchment-region researchers and stewardship teams to refine with local
+  breakpoints, ward-mix, and antibiotic-cost data.
+keywords:
+  - antimicrobial-resistance
+  - amr
+  - surveillance
+  - antibiotic-stewardship
+  - public-health
+  - bioinformatics
+  - clinical-decision-support
+  - eucast
+  - clsi
+  - kafka
+  - timescaledb
+  - neo4j
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-05-26"

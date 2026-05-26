@@ -1,0 +1,82 @@
+[
+  {
+    "gene": "blaCTX-M-15",
+    "family": "blaCTX-M",
+    "description": "Extended-spectrum beta-lactamase (ESBL); CTX-M-15 variant",
+    "mechanisms": ["Enzymatic inactivation"],
+    "drug_classes": ["Cephalosporins (3rd gen)", "Cephalosporins (4th gen)", "Aminopenicillins"],
+    "organisms": [562, 573]
+  },
+  {
+    "gene": "blaKPC",
+    "family": "blaKPC",
+    "description": "Klebsiella pneumoniae carbapenemase",
+    "mechanisms": ["Enzymatic inactivation"],
+    "drug_classes": ["Carbapenems", "Cephalosporins (3rd gen)"],
+    "organisms": [573, 562]
+  },
+  {
+    "gene": "blaNDM-1",
+    "family": "blaNDM",
+    "description": "New Delhi metallo-beta-lactamase 1",
+    "mechanisms": ["Enzymatic inactivation"],
+    "drug_classes": ["Carbapenems", "Cephalosporins (3rd gen)"],
+    "organisms": [562, 573, 470]
+  },
+  {
+    "gene": "qnrB",
+    "family": "qnr",
+    "description": "Plasmid-mediated quinolone resistance protein QnrB",
+    "mechanisms": ["Target protection"],
+    "drug_classes": ["Fluoroquinolones"],
+    "organisms": [562, 573]
+  },
+  {
+    "gene": "mecA",
+    "family": "mec",
+    "description": "Methicillin resistance gene (PBP2a)",
+    "mechanisms": ["Target modification"],
+    "drug_classes": ["Penicillinase-resistant penicillins", "Cephalosporins (2nd gen)", "Beta-lactams"],
+    "organisms": [1280]
+  },
+  {
+    "gene": "vanA",
+    "family": "van",
+    "description": "Vancomycin resistance gene cluster A",
+    "mechanisms": ["Target modification"],
+    "drug_classes": ["Glycopeptides"],
+    "organisms": [1352, 1280]
+  },
+  {
+    "gene": "aac(6')-Ib",
+    "family": "aac",
+    "description": "Aminoglycoside acetyltransferase",
+    "mechanisms": ["Enzymatic inactivation"],
+    "drug_classes": ["Aminoglycosides"],
+    "organisms": [562, 573, 287]
+  },
+  {
+    "gene": "mcr-1",
+    "family": "mcr",
+    "description": "Mobilized colistin resistance gene 1",
+    "mechanisms": ["Target modification"],
+    "drug_classes": ["Polymyxins"],
+    "organisms": [562, 573, 590]
+  },
+  {
+    "gene": "ermB",
+    "family": "erm",
+    "description": "23S rRNA methyltransferase B (macrolide resistance)",
+    "mechanisms": ["Target modification"],
+    "drug_classes": ["Macrolides", "Lincosamides"],
+    "organisms": [1313, 1280]
+  },
+  {
+    "gene": "tetM",
+    "family": "tet",
+    "description": "Ribosomal protection protein",
+    "mechanisms": ["Target protection"],
+    "drug_classes": ["Tetracyclines"],
+    "organisms": [1352, 1313, 1280]
+  }
+]

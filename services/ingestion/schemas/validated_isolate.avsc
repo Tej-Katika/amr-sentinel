@@ -1,0 +1,28 @@
+{
+  "type": "record",
+  "name": "ValidatedIsolateEvent",
+  "namespace": "org.amrsentinel.schema",
+  "doc": "A validated, de-identified antimicrobial susceptibility test result published to isolates.validated.",
+  "fields": [
+    {"name": "event_id",                "type": "string",                                                                   "doc": "UUID v4"},
+    {"name": "facility_id",             "type": "string"},
+    {"name": "specimen_id",             "type": "string"},
+    {"name": "specimen_type",           "type": ["null", "string"], "default": null,                                         "doc": "BLOOD, URINE, RESPIRATORY, WOUND, CSF, STOOL"},
+    {"name": "organism_taxid",          "type": "int",                                                                     "doc": "NCBI Taxonomy ID"},
+    {"name": "organism_name",           "type": "string"},
+    {"name": "gram_stain",              "type": ["null", "string"], "default": null},
+    {"name": "antibiotic_atc",          "type": "string",                                                                   "doc": "WHO ATC code, e.g. J01MA02"},
+    {"name": "antibiotic_name",         "type": "string"},
+    {"name": "drug_class",              "type": ["null", "string"], "default": null},
+    {"name": "measurement_type",        "type": {"type": "enum", "name": "MeasurementType",  "symbols": ["MIC", "DISK"]}},
+    {"name": "measurement_value",       "type": "float"},
+    {"name": "measurement_comparator",  "type": ["null", "string"], "default": null,                                         "doc": "<=, >=, =, >"},
+    {"name": "patient_age_group",       "type": ["null", "string"], "default": null,                                         "doc": "0-4, 5-14, 15-24, 25-34, 35-44, 45-54, 55-64, 65+"},
+    {"name": "patient_sex",             "type": ["null", "string"], "default": null,                                         "doc": "M, F, U"},
+    {"name": "ward_id",                 "type": ["null", "string"], "default": null},
+    {"name": "infection_origin",        "type": ["null", {"type": "enum", "name": "InfectionOrigin", "symbols": ["COMMUNITY", "HOSPITAL", "UNKNOWN"]}], "default": null},
+    {"name": "collection_date",         "type": "string",                                                                   "doc": "ISO 8601 date"},
+    {"name": "ingested_at",             "type": "string",                                                                   "doc": "ISO 8601 datetime"},
+    {"name": "source_format",           "type": "string",                                                                   "doc": "WHONET, CSV, FHIR, MANUAL"}
+  ]
+}

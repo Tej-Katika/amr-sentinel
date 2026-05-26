@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: amr-sentinel-gateway
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/amrsentinel}
+    username: ${SPRING_DATASOURCE_USERNAME:amrsentinel}
+    password: ${SPRING_DATASOURCE_PASSWORD:amrsentinel_dev}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+
+services:
+  ingestion: ${INGESTION_SERVICE_URL:http://localhost:8001}
+  intelligence: ${INTELLIGENCE_SERVICE_URL:http://localhost:8002}
+  agentic: ${AGENTIC_SERVICE_URL:http://localhost:8003}
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-key-change-in-production-min-256-bits-long-required}
+  expiration: 86400000  # 24h in millis
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
